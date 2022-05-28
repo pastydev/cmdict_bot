@@ -5,7 +5,7 @@
 Send `cmdict_bot` an English word and receive its definitions.
 
 <p align="center">
-  <img width="400" src="img/light-demo.png">
+  <img width="600" src="img/light-demo.png">
 </p>
 
 The homepage of `cmdict` is https://github.com/pasty-dev/cmdict.
