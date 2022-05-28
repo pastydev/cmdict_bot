@@ -2,6 +2,12 @@
 
 [![Deploy Bot in Heroku](https://github.com/pasty-dev/cmdict_bot/actions/workflows/deploy.yml/badge.svg)](https://github.com/pasty-dev/cmdict_bot/actions/workflows/deploy.yml)
 
+The username of the bot is "cmdict_bot".
+
+![](img/demonstration.png)
+
+The homepage of `cmdict` is https://github.com/pasty-dev/cmdict.
+
 ## Dev Notes
 
 To fix Python version:
