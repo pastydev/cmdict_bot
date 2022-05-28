@@ -63,6 +63,8 @@ async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
 
 
 def _start_app():
+    _LOG.info("Telegram bot is being started.")
+
     # Create the Application and pass it your bot's token.
     app = Application.builder().token(_TOKEN).build()
 
