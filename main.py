@@ -4,6 +4,7 @@ from importlib.util import find_spec
 import pathlib
 import zipfile
 
+from cmdict.ecdict_connector import ECDICTConnector
 from loguru import logger as _LOG
 import requests
 from telegram import ForceReply, Update
@@ -56,10 +57,18 @@ async def help_command(update: Update, context: CallbackContext.DEFAULT_TYPE) ->
     await update.message.reply_text("Help!")
 
 
-async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+def _query(word: str) -> str:
+    db_engine = ECDICTConnector()
+    return db_engine.query(word)['definition']
+
+
+async def search(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     """Echo the user message."""
     _LOG.debug("To echo a message sent by a user.")
-    await update.message.reply_text(update.message.text)
+    await update.message.reply_text(
+        f"Definitions of \"{update.message.text}\" are: \n\n"
+        + _query(update.message.text)
+    )
 
 
 def _start_app():
@@ -73,7 +82,7 @@ def _start_app():
     app.add_handler(CommandHandler("help", help_command))
 
     # on non command i.e message - echo the message on Telegram
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search))
 
     # Run the bot until the admin presses Ctrl-C
     app.run_polling()
