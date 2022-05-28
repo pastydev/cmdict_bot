@@ -4,6 +4,7 @@ from importlib.util import find_spec
 import pathlib
 import zipfile
 
+from cmdict.ecdict_connector import ECDICTConnector
 from loguru import logger as _LOG
 import requests
 from telegram import ForceReply, Update
@@ -56,10 +57,17 @@ async def help_command(update: Update, context: CallbackContext.DEFAULT_TYPE) ->
     await update.message.reply_text("Help!")
 
 
+def search(word: str) -> str:
+    db_engine = ECDICTConnector()
+    return db_engine.query(word)['definition']
+
+
 async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     """Echo the user message."""
     _LOG.debug("To echo a message sent by a user.")
-    await update.message.reply_text(update.message.text)
+    await update.message.reply_text(
+        search(update.message.text)
+    )
 
 
 def _start_app():
