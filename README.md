@@ -2,13 +2,16 @@
 
 [![Deploy Bot in Heroku](https://github.com/pasty-dev/cmdict_bot/actions/workflows/deploy.yml/badge.svg)](https://github.com/pasty-dev/cmdict_bot/actions/workflows/deploy.yml)
 
-The username of the bot is "cmdict_bot".
+Send `cmdict_bot` an English word and receive its definitions.
 
-![](img/demonstration.png)
+<p align="center">
+  <img width="400" src="img/light-demo.png">
+</p>
 
 The homepage of `cmdict` is https://github.com/pasty-dev/cmdict.
 
-## Dev Notes
+<details><summary>Click to see notes for developers.</summary>
+<p>
 
 To fix Python version:
 
@@ -31,3 +34,6 @@ To enable `Heroku` worker:
 ```sh
 $ heroku ps:scale worker=1 -a cmdict
 ```
+
+</p>
+</details>
