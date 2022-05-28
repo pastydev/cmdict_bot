@@ -1,5 +1,6 @@
 
 import os
+from importlib.util import find_spec
 import pathlib
 import zipfile
 
@@ -12,7 +13,9 @@ _TOKEN: str = os.environ.get('CMDICT_BOT')
 _DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 
 
-_db_dir = os.path.join(str(pathlib.Path(__file__).parent), "data")
+_db_dir = os.path.join(str(pathlib.Path(find_spec("cmdict").origin).parent), "data")
+_db_file = os.path.join(_db_dir, "stardict.db")
+_db_path = pathlib.Path(_db_file)
 _db_zip = os.path.join(_db_dir, "stardict.zip")
 
 
@@ -24,7 +27,7 @@ def _download_stardict():
     r = requests.get(_DB_URL, stream=True)
     block_size = 1024
 
-    _LOG.info("Start to download \"stardict.zip\".")
+    _LOG.info("Start to download \"stardict.zip\" in {path}.", path=_db_zip)
 
     with open(_db_zip, "wb") as f:
         for data in r.iter_content(block_size):
@@ -75,7 +78,9 @@ def _start_app():
 
 
 def main() -> None:
-    _download_stardict()
+    if not _db_path.is_file():
+        _download_stardict()
+
     _start_app()
 
 
