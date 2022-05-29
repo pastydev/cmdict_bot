@@ -3,7 +3,7 @@ from os import environ
 
 from cmdict_bot.bot import start_bot
 
-_TOKEN: str = environ.get("CMDICT_BOT")
+_TOKEN: str = environ.get("CMDICT_TEST_BOT")
 
 
 def test_start_bot():
