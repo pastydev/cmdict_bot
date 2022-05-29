@@ -15,7 +15,8 @@ from cmdict_bot.log import LOG
 
 #: Token of the bot for production.
 _TOKEN: str = environ.get("CMDICT_BOT")
-
+# See supported HTML in https://core.telegram.org/bots/api#html-style.
+#: Message sent to user at the start, formatted in HTML.
 _START: str = """
 <b>cmdict_bot</b>: "pasty-dev/cmdict" as Telegram bot.
 
