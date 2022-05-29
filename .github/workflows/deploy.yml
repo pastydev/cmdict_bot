@@ -11,6 +11,7 @@ on:
       - 'requirements.txt'
       - 'Procfile'
       - 'runtime.txt'
+      - 'cmdict_bot/**'
 
 jobs:
   build:
