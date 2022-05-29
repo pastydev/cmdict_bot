@@ -1,8 +1,9 @@
 """Commands and non-command behaviour of the Telegram bot."""
 from os import environ
+from os import path
+from pathlib import Path
 from typing import Optional
 
-from telegram import ForceReply
 from telegram import Update
 from telegram.ext import Application
 from telegram.ext import CallbackContext
@@ -15,6 +16,9 @@ from cmdict_bot.log import LOG
 
 #: Token of the bot for production.
 _TOKEN: str = environ.get("CMDICT_BOT")
+
+_path = path.join(str(Path(__file__).parent.parent), "README.md")
+_START: str = open(_path, "r").read()
 
 
 async def _search(
@@ -43,11 +47,11 @@ async def _start(
         context: more info on the user.
     """
     user = update.effective_user
-    LOG.info('New user: "{name}".', name=user.name)
-    await update.message.reply_html(
-        rf"Hi {user.mention_html()}!",
-        reply_markup=ForceReply(selective=True),
+    LOG.info(
+        'New user: "{user_name}" has started the bot.', user_name=user.name
     )
+
+    await update.message.reply_markdown(_START)
 
 
 async def _help_command(
@@ -63,14 +67,14 @@ async def _help_command(
 
 
 def start_bot(token: Optional[str] = _TOKEN):
-    """Start the Telegram bot.
+    """Start a Telegram bot for a token.
 
     Args:
         token: token of the Telegram bot. Default to be the token of the
             bot for production. The token of the bot for testing can be
             passed. The token is stored as an environment variable.
     """
-    LOG.info("Telegram bot is being started.")
+    LOG.info("The Telegram bot is being started.")
 
     # Create the Application and pass it your bot's token.
     bot = Application.builder().token(token).build()
