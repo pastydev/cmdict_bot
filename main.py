@@ -1,11 +1,13 @@
-"""File to be run for the app to start."""
-from cmdict_bot.db import db_path, download_stardict
-from cmdict_bot.app import start_bot
+"""File to be run for the bot to start."""
+from cmdict_bot.bot import start_bot
+from cmdict_bot.db import db_path
+from cmdict_bot.db import get_stardict
 
 
 def main() -> None:
+    """Get ``stardict.db`` and start the bot for production."""
     if not db_path.is_file():
-        download_stardict()
+        get_stardict()
 
     start_bot()
 
