@@ -1,12 +1,13 @@
 """Behaviors of the Telegram bot."""
-import os
+from os import environ
+from typing import Optional
 
 from cmdict_bot.log import LOG
 from cmdict_bot.db import query
 from telegram import ForceReply, Update
 from telegram.ext import Application, CallbackContext, CommandHandler, MessageHandler, filters
 
-_TOKEN: str = os.environ.get('CMDICT_BOT')
+_TOKEN: str = environ.get('CMDICT_BOT')
 
 
 async def _search(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
@@ -18,8 +19,6 @@ async def _search(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None
     )
 
 
-# Define a few command handlers. These usually take the two arguments update and
-# context.
 async def _start(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
     user = update.effective_user
@@ -35,11 +34,11 @@ async def _help_command(update: Update, context: CallbackContext.DEFAULT_TYPE) -
     await update.message.reply_text("Help!")
 
 
-def start_bot():
+def start_bot(token: Optional[str] = _TOKEN):
     LOG.info("Telegram bot is being started.")
 
     # Create the Application and pass it your bot's token.
-    bot = Application.builder().token(_TOKEN).build()
+    bot = Application.builder().token(token).build()
 
     # on different commands - answer in Telegram
     bot.add_handler(CommandHandler("start", _start))
