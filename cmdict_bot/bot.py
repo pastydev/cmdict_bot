@@ -1,10 +1,9 @@
 """Commands and non-command behaviour of the Telegram bot."""
 from os import environ
-from os import path
-from pathlib import Path
 from typing import Optional
 
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import Application
 from telegram.ext import CallbackContext
 from telegram.ext import CommandHandler
@@ -17,8 +16,20 @@ from cmdict_bot.log import LOG
 #: Token of the bot for production.
 _TOKEN: str = environ.get("CMDICT_BOT")
 
-_path = path.join(str(Path(__file__).parent.parent), "README.md")
-_START: str = open(_path, "r").read()
+_START: str = """
+<b>cmdict_bot</b>: "pasty-dev/cmdict" as Telegram bot.
+
+Send it an English word and receive its definitions. For example, if you send "test", if will reply:
+
+<i>Definitions of "test" are:
+
+n. any standardized procedure for measuring sensitivity or memory or intelligence or aptitude or personality etc
+n. the act of undergoing testing
+n. the act of testing something
+n. a hard outer covering as of some amoebas and sea urchins </i>
+
+Check out the source code of "pasty-dev/cmdict" in https://github.com/pasty-dev/cmdict.
+"""  # noqa: E501
 
 
 async def _search(
@@ -51,7 +62,7 @@ async def _start(
         'New user: "{user_name}" has started the bot.', user_name=user.name
     )
 
-    await update.message.reply_markdown(_START)
+    await update.message.reply_text(_START, parse_mode=ParseMode.HTML)
 
 
 async def _help_command(
