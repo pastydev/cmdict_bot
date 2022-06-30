@@ -1,6 +1,7 @@
 name: Deploy Bot in Heroku
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
