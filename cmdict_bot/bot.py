@@ -11,6 +11,7 @@ from telegram.ext import CallbackContext
 from telegram.ext import CommandHandler
 from telegram.ext import filters
 from telegram.ext import MessageHandler
+from telegram.ext import ContextTypes
 
 from cmdict_bot.db import query_definitions
 from cmdict_bot.log import LOG
@@ -36,7 +37,7 @@ Check out the source code of "pasty-dev/cmdict" in https://github.com/pasty-dev/
 
 
 async def _search(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Search user-input.
 
@@ -52,7 +53,7 @@ async def _search(
 
 
 async def _start(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Send a message to first-time user.
 
@@ -69,7 +70,7 @@ async def _start(
 
 
 async def _help_command(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Send a message when the command /help is issued.
 
