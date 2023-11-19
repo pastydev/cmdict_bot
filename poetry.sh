@@ -4,3 +4,5 @@
 poetry update --with dev
 
 poetry export -f requirements.txt --output cmdict_bot/requirements.txt --without-hashes
+
+poetry export -f requirements.txt --output tests/requirements.txt --only=dev --without-hashes
