@@ -5,7 +5,7 @@ Resources:
   CmdictBot:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: '.'
+      CodeUri: 'src/.'
       Description: ''
       MemorySize: 128
       Timeout: 3
