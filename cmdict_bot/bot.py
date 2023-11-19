@@ -16,7 +16,7 @@ from cmdict_bot.db import query_definitions
 from cmdict_bot.log import LOG
 
 #: Token of the bot for production.
-_TOKEN: str = environ.get("CMDICT_BOT")
+_TOKEN: str = environ.get("CMDICT_TEST_BOT")
 # See supported HTML in https://core.telegram.org/bots/api#html-style.
 #: Message sent to user at the start, formatted in HTML.
 _START: str = """
