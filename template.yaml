@@ -29,6 +29,6 @@ Resources:
 
 Outputs:
   CmdictBotApi:
-    Description: "Lambda Function URL for PTB API"
+    Description: "Lambda Function URL for Telegram Bot API"
     Value:
-      Fn::GetAtt: CmdictBotFunctionUrl.FunctionUrl
+      Fn::GetAtt: CmdictBotUrl.FunctionUrl
