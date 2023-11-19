@@ -15,12 +15,16 @@ on:
       - 'cmdict_bot/**'
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - uses: actions/setup-python@v2
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "cmdict"
-          heroku_email: "edxu96@outlook.com"
+          aws-access-key-id: ${{ secrets.AWS_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: 'eu-central-1'
+      - run: sam build --use-container
+      - run: sam deploy --config-file samconfig.toml --no-confirm-changeset --no-fail-on-empty-changeset
