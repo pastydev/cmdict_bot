@@ -20,21 +20,9 @@ Resources:
         Size: 512
       FunctionUrlConfig:
         AuthType: NONE
+        InvokeMode: BUFFERED
       RuntimeManagementConfig:
         UpdateRuntimeOn: Auto
       SnapStart:
         ApplyOn: None
       PackageType: Zip
-      Policies:
-        - Statement:
-            - Effect: Allow
-              Action:
-                - logs:CreateLogGroup
-              Resource: arn:aws:logs:eu-central-1:129292220434:*
-            - Effect: Allow
-              Action:
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-              Resource:
-                - >-
-                  arn:aws:logs:eu-central-1:129292220434:log-group:/aws/lambda/cmdict_bot:*
