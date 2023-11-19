@@ -5,10 +5,7 @@ import pytest
 import requests
 
 _REGION_NAME = "eu-central-1"
-
-_STACK_NAME = os.environ.get("AWS_SAM_STACK_NAME")
-if _STACK_NAME is None:
-    raise ValueError('Please set the AWS_SAM_STACK_NAME environment variable to the name of your stack')
+_STACK_NAME = "CmdictBot"
 
 
 @pytest.fixture()
@@ -25,10 +22,10 @@ def api_gateway_url():
 
     stacks = response["Stacks"]
     stack_outputs = stacks[0]["Outputs"]
-    api_outputs = [output for output in stack_outputs if output["OutputKey"] == "HelloWorldApi"]
+    api_outputs = [output for output in stack_outputs if output["OutputKey"] == "CmdictBotApi"]
 
     if not api_outputs:
-        raise KeyError(f"HelloWorldAPI not found in stack {_STACK_NAME}")
+        raise KeyError(f"CmdictBotApi not found in stack {_STACK_NAME}")
 
     return api_outputs[0]["OutputValue"]  # Extract url from stack outputs
 
