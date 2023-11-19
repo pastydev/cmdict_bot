@@ -13,8 +13,8 @@ from telegram.ext import filters
 from telegram.ext import MessageHandler
 from telegram.ext import ContextTypes
 
-from .db import query_definitions
-from .log import LOG
+from db import query_definitions
+from log import LOG
 
 #: Token of the bot for production.
 _TOKEN: str = environ.get("CMDICT_TEST_BOT")
