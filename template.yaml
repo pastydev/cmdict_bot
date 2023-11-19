@@ -5,11 +5,11 @@ Resources:
   CmdictBot:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: '.'
+      CodeUri: 'cmdict_bot'
       Description: ''
       MemorySize: 128
       Timeout: 3
-      Handler: cmdict_bot.app.lambda_handler
+      Handler: app.lambda_handler
       Runtime: python3.8
       Architectures:
         - x86_64

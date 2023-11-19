@@ -1,7 +1,7 @@
 """Main file of the serverless application."""
 import asyncio
 
-from cmdict_bot.bot import run
+from .bot import run
 
 
 def lambda_handler(event, context):
