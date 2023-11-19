@@ -2,11 +2,11 @@ import json
 
 import pytest
 
-from cmdict import app
+from cmdict_bot import app
 
 
 @pytest.fixture()
-def apigw_event():
+def apigw_event() -> dict:
     """ Generates API GW Event"""
 
     return {
@@ -62,7 +62,7 @@ def apigw_event():
     }
 
 
-def test_lambda_handler(apigw_event):
+def test_lambda_handler(apigw_event: dict):
 
     ret = app.lambda_handler(apigw_event, "")
     data = json.loads(ret["body"])
