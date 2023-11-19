@@ -7,7 +7,7 @@ from zipfile import ZipFile
 from cmdict.ecdict_connector import ECDICTConnector
 from requests import get
 
-from log import LOG
+from cmdict_bot.log import LOG
 
 _DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 
