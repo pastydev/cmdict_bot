@@ -9,7 +9,7 @@ Resources:
       Description: ''
       MemorySize: 128
       Timeout: 3
-      Handler: main.lambda_handler
+      Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Architectures:
         - x86_64
