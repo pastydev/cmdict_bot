@@ -26,3 +26,9 @@ Resources:
       SnapStart:
         ApplyOn: None
       PackageType: Zip
+
+Outputs:
+  CmdictBotApi:
+    Description: "Lambda Function URL for PTB API"
+    Value:
+      Fn::GetAtt: CmdictBotFunctionUrl.FunctionUrl
