@@ -119,9 +119,8 @@ async def run(event: dict, context) -> dict:
         jss["update_id"] = 1 # Update.de_json expects update_id to be present, so as temporary workaround, we set it to 1. See this issue --> https://github.com/jojo786/Sample-Python-Telegram-Bot-AWS-Serverless-PTBv20/issues/1
         app = config_app()
         await app.initialize()
-
-        update = Update.de_json(jss, app.bot)
-        await app.process_update(update)
+        
+        await app.process_update(Update.de_json(jss, app.bot))
         value = {"statusCode": 200, "body": "Success"}
     except Exception as exc:
         traceback.print_exc()
