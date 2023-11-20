@@ -13,8 +13,7 @@ _DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict
 
 
 _DB_DIR = path.join(str(Path(find_spec("cmdict").origin).parent), "data")
-_DB_FILE = path.join(_DB_DIR, "stardict.db")
-DB_PATH = Path(_DB_FILE)
+_DB_PATH = Path(path.join(_DB_DIR, "stardict.db"))
 _DB_ZIP = path.join(_DB_DIR, "stardict.zip")
 
 
@@ -48,5 +47,8 @@ def query_definitions(word: str) -> str:
     Returns:
         Definitions of the word.
     """
+    if not _DB_PATH.exists():
+        get_stardict()
+
     db_engine = ECDICTConnector()
     return db_engine.query(word)["definition"]
