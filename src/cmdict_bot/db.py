@@ -12,29 +12,29 @@ from cmdict_bot.log import LOG
 _DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 
 
-_db_dir = path.join(str(Path(find_spec("cmdict").origin).parent), "data")
-_db_file = path.join(_db_dir, "stardict.db")
-db_path = Path(_db_file)
-_db_zip = path.join(_db_dir, "stardict.zip")
+_DB_DIR = path.join(str(Path(find_spec("cmdict").origin).parent), "data")
+_DB_FILE = path.join(_DB_DIR, "stardict.db")
+DB_PATH = Path(_DB_FILE)
+_DB_ZIP = path.join(_DB_DIR, "stardict.zip")
 
 
 def get_stardict():
     """Download and extract ``stardict.db``."""
-    data_dir_path = Path(_db_dir)
+    data_dir_path = Path(_DB_DIR)
     if not data_dir_path.exists():
         data_dir_path.mkdir(parents=True)
 
     r = get(_DB_URL, stream=True)
     block_size = 1024
 
-    LOG.info('Start to download "stardict.zip" in {path}.', path=_db_zip)
+    LOG.info('Start to download "stardict.zip" in {path}.', path=_DB_ZIP)
 
-    with open(_db_zip, "wb") as f:
+    with open(_DB_ZIP, "wb") as f:
         for data in r.iter_content(block_size):
             f.write(data)
 
-    with ZipFile(_db_zip, "r") as ref:
-        ref.extractall(_db_dir)
+    with ZipFile(_DB_ZIP, "r") as ref:
+        ref.extractall(_DB_DIR)
 
     LOG.success('"stardict.zip" has been downloaded and extracted.')
 
