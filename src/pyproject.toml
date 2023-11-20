@@ -6,12 +6,13 @@ authors = ["Edward Xu <edxu96@outlook.com>"]
 license = "GNU v3"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 loguru = "^0.5.1"
 python-telegram-bot = "~20.0a0"
-cmdict = "^0.1.2"
+cmdict = "~0.1.2"
 requests = "^2.27.1"
 pip = "^22.1.1"
+urllib3 = "~1.26"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^2.9.2"
