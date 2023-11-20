@@ -8,8 +8,8 @@ Resources:
       Description: ''
       MemorySize: 128
       Timeout: 3
-      Handler: app.lambda_handler
-      CodeUri: example
+      Handler: main.lambda_handler
+      CodeUri: src
       Runtime: python3.8
       Architectures:
         - x86_64
