@@ -7,13 +7,11 @@ from typing import Optional
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import Application
-from telegram.ext import CallbackContext
 from telegram.ext import CommandHandler
 from telegram.ext import filters
 from telegram.ext import MessageHandler
 from telegram.ext import ContextTypes
 
-from cmdict_bot.db import query_definitions
 from cmdict_bot.log import LOG
 
 #: Token of the bot for production.
@@ -48,7 +46,7 @@ async def _search(
     LOG.debug("To echo a message sent by a user.")
     await update.message.reply_text(
         f'Definitions of "{update.message.text}" are: \n\n'
-        + query_definitions(update.message.text)
+        + '(database not ready yet)'
     )
 
 
