@@ -1,4 +1,4 @@
-name: Deploy Bot in Heroku
+name: AWS SAM deploy
 
 on:
   workflow_dispatch:
