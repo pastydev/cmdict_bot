@@ -5,14 +5,14 @@ on:
   push:
     branches:
       - main
-    ## Deploy only when related files are changed. Learnt from
-    ## https://stackoverflow.com/a/63461325/10181743.
     paths:
-      - 'main.py'
-      - 'requirements.txt'
-      - 'Procfile'
-      - 'runtime.txt'
-      - 'cmdict_bot/**'
+      - 'src/**'
+      - 'template.yaml'
+      - 'samconfig.toml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-deploy:
