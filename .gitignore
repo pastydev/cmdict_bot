@@ -1,10 +1,8 @@
 
+.aws-sam/
 
 ## mac
 .DS_Store
-
-## vscode
-.vscode
 
 ## Python
 

@@ -1,5 +1,7 @@
 """Commands and non-command behaviour of the Telegram bot."""
+import json
 from os import environ
+import traceback
 from typing import Optional
 
 from telegram import Update
@@ -9,12 +11,13 @@ from telegram.ext import CallbackContext
 from telegram.ext import CommandHandler
 from telegram.ext import filters
 from telegram.ext import MessageHandler
+from telegram.ext import ContextTypes
 
 from cmdict_bot.db import query_definitions
 from cmdict_bot.log import LOG
 
 #: Token of the bot for production.
-_TOKEN: str = environ.get("CMDICT_BOT")
+_TOKEN: str = environ.get("CMDICT_TEST_BOT")
 # See supported HTML in https://core.telegram.org/bots/api#html-style.
 #: Message sent to user at the start, formatted in HTML.
 _START: str = """
@@ -34,7 +37,7 @@ Check out the source code of "pasty-dev/cmdict" in https://github.com/pasty-dev/
 
 
 async def _search(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Search user-input.
 
@@ -50,7 +53,7 @@ async def _search(
 
 
 async def _start(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Send a message to first-time user.
 
@@ -67,7 +70,7 @@ async def _start(
 
 
 async def _help_command(
-    update: Update, context: CallbackContext.DEFAULT_TYPE
+    update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Send a message when the command /help is issued.
 
@@ -78,25 +81,48 @@ async def _help_command(
     await update.message.reply_text("Help!")
 
 
-def start_bot(token: Optional[str] = _TOKEN):
-    """Start a Telegram bot for a token.
+def config_app(token: Optional[str] = _TOKEN) -> Application:
+    """Config a Telegram bot.
 
     Args:
-        token: token of the Telegram bot. Default to be the token of the
-            bot for production. The token of the bot for testing can be
-            passed. The token is stored as an environment variable.
-    """
-    LOG.info("The Telegram bot is being started.")
+        token: _description_. Defaults to _TOKEN.
 
+    Returns:
+        Application: _description_
+    """
     # Create the Application and pass it your bot's token.
-    bot = Application.builder().token(token).build()
+    app = Application.builder().token(token).build()
 
     # on different commands - answer in Telegram
-    bot.add_handler(CommandHandler("start", _start))
-    bot.add_handler(CommandHandler("help", _help_command))
+    app.add_handler(CommandHandler("start", _start))
+    app.add_handler(CommandHandler("help", _help_command))
 
     # on non command i.e message - echo the message on Telegram
-    bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, _search))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, _search))
+    
+    return app
 
-    # Run the bot until the admin presses Ctrl-C
-    bot.run_polling()
+
+async def run(event: dict, context) -> dict:
+    """Run Telegram bot.
+
+    Args:
+        event (dict): _description_
+        context (_type_): _description_
+
+    Returns:
+        dict: _description_
+    """
+    value: dict
+    try:
+        jss = json.loads(event["body"])
+        jss["update_id"] = 1 # Update.de_json expects update_id to be present, so as temporary workaround, we set it to 1. See this issue --> https://github.com/jojo786/Sample-Python-Telegram-Bot-AWS-Serverless-PTBv20/issues/1
+        app = config_app()
+        update = Update.de_json(jss, app.bot)
+        app.process_update(update)
+        value = {"statusCode": 200, "body": "Success"}
+    except Exception as exc:
+        traceback.print_exc()
+        print(f"Error: {exc}")
+        value = {"statusCode": 500, "body": f"Error: {exc}"}
+    return value

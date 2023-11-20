@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Run a Telegram Bot for cmdict using AWS Lambda.
+Resources:
+  CmdictBot:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Handler: lambda_function.lambda_handler
+      CodeUri: src
+      Runtime: python3.8
+      Architectures:
+        - x86_64
+      EventInvokeConfig:
+        MaximumEventAgeInSeconds: 21600
+        MaximumRetryAttempts: 2
+      EphemeralStorage:
+        Size: 512
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: BUFFERED
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+      SnapStart:
+        ApplyOn: None
+      PackageType: Zip
+
+Outputs:
+  CmdictBotApi:
+    Description: "Lambda Function URL for Telegram Bot API"
+    Value:
+      Fn::GetAtt: CmdictBotUrl.FunctionUrl
