@@ -17,7 +17,7 @@ _DB_PATH = Path(path.join(_DB_DIR, "stardict.db"))
 _DB_ZIP = path.join(_DB_DIR, "stardict.zip")
 
 
-def get_stardict():
+def _get_stardict():
     """Download and extract ``stardict.db``."""
     data_dir_path = Path(_DB_DIR)
     if not data_dir_path.exists():
@@ -48,7 +48,7 @@ def query_definitions(word: str) -> str:
         Definitions of the word.
     """
     if not _DB_PATH.exists():
-        get_stardict()
+        _get_stardict()
 
     db_engine = ECDICTConnector()
     return db_engine.query(word)["definition"]

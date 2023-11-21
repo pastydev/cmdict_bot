@@ -12,6 +12,8 @@
     "settings": {
         "editor.cursorBlinking": "solid",
         "editor.cursorStyle": "block",
+        "editor.trimAutoWhitespace": true,
+        "editor.renderWhitespace": "trailing",
         "editor.rulers": [
             78
         ],

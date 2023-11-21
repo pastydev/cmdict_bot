@@ -2,7 +2,7 @@
 import json
 from os import environ
 import traceback
-from typing import Optional
+from typing import Optional, TypedDict
 
 from telegram import Update
 from telegram.constants import ParseMode
@@ -14,10 +14,9 @@ from telegram.ext import ContextTypes
 
 from cmdict_bot.log import LOG
 
-#: Token of the bot for production.
-_TOKEN: str = environ.get("CMDICT_TEST_BOT")
+_TOKEN: str = environ.get("CMDICT_BOT")
+
 # See supported HTML in https://core.telegram.org/bots/api#html-style.
-#: Message sent to user at the start, formatted in HTML.
 _START: str = """
 <b>cmdict_bot</b>: "pasty-dev/cmdict" as Telegram bot.
 
@@ -32,6 +31,7 @@ n. a hard outer covering as of some amoebas and sea urchins </i>
 
 Check out the source code of "pasty-dev/cmdict" in https://github.com/pasty-dev/cmdict.
 """  # noqa: E501
+"""Message sent to user at the start, formatted in Telegram-supported HTML."""
 
 
 async def _search(
@@ -83,10 +83,11 @@ def config_app(token: Optional[str] = _TOKEN) -> Application:
     """Config a Telegram bot.
 
     Args:
-        token: _description_. Defaults to _TOKEN.
+        token: token of the Telegram bot. Defaults to be that of "cmdict_bot"
+            bot.
 
     Returns:
-        Application: _description_
+        Telegram bot application.
     """
     # Create the Application and pass it your bot's token.
     app = Application.builder().token(token).build()
@@ -97,31 +98,38 @@ def config_app(token: Optional[str] = _TOKEN) -> Application:
 
     # on non command i.e message - echo the message on Telegram
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, _search))
-    
+
+    LOG.info("A Telegram bot application has been configured.")
     return app
 
 
-async def run(event: dict, context) -> dict:
-    """Run Telegram bot.
+class Response(TypedDict):
+    """Response returned to the request."""
+    statusCode: int
+    body: str
+
+
+async def run(event: dict, context) -> Response:
+    """Run Telegram bot application to reply to a Telegram message.
 
     Args:
-        event (dict): _description_
-        context (_type_): _description_
+        event: sent by Telegram server.
+        context: sent by Telegram server.
 
     Returns:
-        dict: _description_
+        Response in Json.
     """
-    value: dict
+    value: Response
     try:
         jss = json.loads(event["body"])
         jss["update_id"] = 1 # Update.de_json expects update_id to be present, so as temporary workaround, we set it to 1. See this issue --> https://github.com/jojo786/Sample-Python-Telegram-Bot-AWS-Serverless-PTBv20/issues/1
         app = config_app()
         await app.initialize()
-        
+
         await app.process_update(Update.de_json(jss, app.bot))
         value = {"statusCode": 200, "body": "Success"}
     except Exception as exc:
-        traceback.print_exc()
-        print(f"Error: {exc}")
-        value = {"statusCode": 500, "body": f"Error: {exc}"}
+        LOG.error(traceback.format_exc())
+        LOG.error(f'The error is: "{exc}".')
+        value = {"statusCode": 500, "body": f'The error is: "{exc}".'}
     return value
