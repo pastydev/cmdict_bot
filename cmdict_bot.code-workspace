@@ -7,6 +7,10 @@
         {
             "name": "Python code",
             "path": "src"
+        },
+        {
+            "name": "GitHub Actions",
+            "path": ".github/workflows"
         }
     ],
     "settings": {

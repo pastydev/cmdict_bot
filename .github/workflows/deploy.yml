@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - 'template.yaml'
       - 'samconfig.toml'
+      - '.github/workflows/deploy.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -26,5 +27,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: 'eu-central-1'
-      - run: sam build --use-container
+      - run: |
+          sam build --use-container
+        name: SAM Build
       - run: sam deploy --config-file samconfig.toml --no-confirm-changeset --no-fail-on-empty-changeset
+        name: Deploy to AWS
+      - run: |
+          curl https://api.telegram.org/bot${{ secrets.CMDICT_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
+          curl https://api.telegram.org/bot${{ secrets.CMDICT_BOT }}/getWebhookInfo
+        name: Set WebHook of bot to Function URL
