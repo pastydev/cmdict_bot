@@ -23,6 +23,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  AWS_REGION: "eu-central-1"
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -32,9 +39,9 @@ jobs:
       - uses: aws-actions/setup-sam@v1
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
-          aws-region: 'eu-central-1'
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          role-session-name: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          aws-region: ${{ env.AWS_REGION }}
       - run: |
           sam build --use-container
         name: Build
