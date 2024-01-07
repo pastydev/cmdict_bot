@@ -10,6 +10,14 @@ on:
       - 'template.yaml'
       - 'samconfig.toml'
       - '.github/workflows/deploy.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'template.yaml'
+      - 'samconfig.toml'
+      - '.github/workflows/deploy-test.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -29,9 +37,13 @@ jobs:
           aws-region: 'eu-central-1'
       - run: |
           sam build --use-container
-        name: SAM Build
-      - run: sam deploy --config-file samconfig.toml --no-confirm-changeset --no-fail-on-empty-changeset
-        name: Deploy to AWS
+        name: Build
+      - run: |
+          sam deploy --config-file samconfig.toml \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --resolve-image-repos
+        name: Deploy
       - run: |
           curl https://api.telegram.org/bot${{ secrets.CMDICT_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
           curl https://api.telegram.org/bot${{ secrets.CMDICT_BOT }}/getWebhookInfo
