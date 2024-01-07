@@ -15,8 +15,6 @@ Resources:
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: BUFFERED
-      RuntimeManagementConfig:
-        UpdateRuntimeOn: Auto
       SnapStart:
         ApplyOn: None
       PackageType: Image
