@@ -8,6 +8,6 @@ COPY cmdict_bot/ ${LAMBDA_TASK_ROOT}/cmdict_bot/
 
 COPY main.py __init__.py set_up_db.py ${LAMBDA_TASK_ROOT}/
 
-RUN python set_up_db.py
+RUN python -m cmdict download
 
 CMD [ "main.handler" ]
