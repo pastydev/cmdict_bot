@@ -32,7 +32,7 @@ jobs:
         name: SAM Build
       - run: sam deploy --config-file samconfig.toml --no-confirm-changeset --no-fail-on-empty-changeset
         name: Deploy to AWS
-      - run: |
-          curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
-          curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/getWebhookInfo
-        name: Set WebHook of bot to Function URL
+      # - run: |
+      #     curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
+      #     curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/getWebhookInfo
+      #   name: Set WebHook of bot to Function URL
