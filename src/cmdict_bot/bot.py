@@ -12,6 +12,7 @@ from telegram.ext import filters
 from telegram.ext import MessageHandler
 from telegram.ext import ContextTypes
 
+from cmdict_bot.db import query_definitions
 from cmdict_bot.log import LOG
 
 _TOKEN: str = environ.get("CMDICT_BOT")
@@ -46,7 +47,7 @@ async def _search(
     LOG.debug("To echo a message sent by a user.")
     await update.message.reply_text(
         f'Definitions of "{update.message.text}" are: \n\n'
-        + '(database not ready yet)'
+        + query_definitions(update.message.text)
     )
 
 
