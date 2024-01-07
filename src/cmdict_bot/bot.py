@@ -44,11 +44,12 @@ async def _search(
         update: sent from the user.
         context: more info on the user.
     """
-    LOG.debug("To echo a message sent by a user.")
-    await update.message.reply_text(
-        f'Definitions of "{update.message.text}" are: \n\n'
+    text = str(
+        'Definitions of "{update.message.text}" are: \n\n'
         + query_definitions(update.message.text)
     )
+    LOG.debug(text)
+    await update.message.reply_text(text)
 
 
 async def _start(
