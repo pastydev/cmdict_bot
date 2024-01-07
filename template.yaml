@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Run a Telegram Bot for cmdict using AWS Lambda.
+Description: Run testing version of Telegram Bot for cmdict using AWS Lambda.
 Resources:
-  CmdictBot:
+  CmdictTestBot:
     Type: AWS::Serverless::Function
     Properties:
       MemorySize: 128
@@ -27,7 +27,7 @@ Resources:
       DockerContext: /src
       Dockerfile: /src/Dockerfile
 Outputs:
-  CmdictBotApi:
-    Description: Lambda Function URL for Telegram Bot API.
+  CmdictTestBotApi:
+    Description: Lambda Function URL for testing version of Telegram Bot API.
     Value:
-      Fn::GetAtt: CmdictBotUrl.FunctionUrl
+      Fn::GetAtt: CmdictTestBotUrl.FunctionUrl
