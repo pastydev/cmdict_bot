@@ -34,7 +34,7 @@ jobs:
           sam deploy --config-file samconfig.toml \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --image-repository ${{ secrets.AMAZON_ECR }}
+            --resolve-image-repos
         name: Deploy to AWS
       # - run: |
       #     curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
