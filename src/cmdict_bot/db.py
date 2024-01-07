@@ -1,4 +1,4 @@
-"""Download ``stardict.db``, as required by ``cmdict``."""
+"""Functions related to database."""
 from importlib.util import find_spec
 from os import path
 from pathlib import Path
@@ -9,33 +9,33 @@ from requests import get
 
 from cmdict_bot.log import LOG
 
-_DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
+_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
+_DIR = path.join(str(Path(find_spec("cmdict").origin).parent), "data")
+_DB_PATH = Path(path.join(_DIR, "stardict.db"))
+_ZIP_PATH = path.join(_DIR, "stardict.zip")
 
 
-_DB_DIR = path.join(str(Path(find_spec("cmdict").origin).parent), "data")
-_DB_PATH = Path(path.join(_DB_DIR, "stardict.db"))
-_DB_ZIP = path.join(_DB_DIR, "stardict.zip")
-
-
-def _get_stardict():
-    """Download and extract ``stardict.db``."""
-    data_dir_path = Path(_DB_DIR)
+def get_stardict():
+    """Download and extract `stardict.db` to `data` dir of cmdict."""
+    data_dir_path = Path(_DIR)
     if not data_dir_path.exists():
         data_dir_path.mkdir(parents=True)
 
-    r = get(_DB_URL, stream=True)
+    r = get(_URL, stream=True)
     block_size = 1024
 
-    LOG.info('Start to download "stardict.zip" in {path}.', path=_DB_ZIP)
+    LOG.info('Start to download "stardict.zip" in {path}.', path=_ZIP_PATH)
 
-    with open(_DB_ZIP, "wb") as f:
+    with open(_ZIP_PATH, "wb") as f:
         for data in r.iter_content(block_size):
             f.write(data)
 
-    with ZipFile(_DB_ZIP, "r") as ref:
-        ref.extractall(_DB_DIR)
+    with ZipFile(_ZIP_PATH, "r") as ref:
+        ref.extractall(_DIR)
 
-    LOG.success('"stardict.zip" has been downloaded and extracted.')
+    LOG.success(
+        f'"stardict.zip" has been downloaded and extracted to {_DB_PATH}.'
+    )
 
 
 def query_definitions(word: str) -> str:
@@ -47,8 +47,5 @@ def query_definitions(word: str) -> str:
     Returns:
         Definitions of the word.
     """
-    if not _DB_PATH.exists():
-        _get_stardict()
-
     db_engine = ECDICTConnector()
     return db_engine.query(word)["definition"]

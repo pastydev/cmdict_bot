@@ -4,8 +4,10 @@ COPY requirements.txt ${LAMBDA_TASK_ROOT}
 
 RUN pip install -r requirements.txt
 
-COPY main.py cmdict_bot/ ${LAMBDA_TASK_ROOT}
+COPY cmdict_bot/ ${LAMBDA_TASK_ROOT}/cmdict_bot/
 
-RUN python ${LAMBDA_TASK_ROOT}/cmdict_bot/db.py
+COPY main.py __init__.py set_up_db.py ${LAMBDA_TASK_ROOT}
+
+RUN python set_up_db.py
 
 CMD [ "main.handler" ]
