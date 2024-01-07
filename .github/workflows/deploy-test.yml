@@ -30,7 +30,11 @@ jobs:
       - run: |
           sam build --use-container
         name: SAM Build
-      - run: sam deploy --config-file samconfig.toml --no-confirm-changeset --no-fail-on-empty-changeset
+      - run: |
+          sam deploy --config-file samconfig.toml \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --image-repository ${{ secrets.AMAZON_ECR }}
         name: Deploy to AWS
       # - run: |
       #     curl https://api.telegram.org/bot${{ secrets.CMDICT_TEST_BOT }}/setWebhook?url=${{ secrets.FUNCTION_URL }}
