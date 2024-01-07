@@ -5,14 +5,10 @@ Resources:
   CmdictBot:
     Type: AWS::Serverless::Function
     Properties:
-      Description: ''
       MemorySize: 128
       Timeout: 3
       Handler: main.lambda_handler
       CodeUri: src
-      Runtime: python3.8
-      Architectures:
-        - x86_64
       EventInvokeConfig:
         MaximumEventAgeInSeconds: 21600
         MaximumRetryAttempts: 2
@@ -25,7 +21,11 @@ Resources:
         UpdateRuntimeOn: Auto
       SnapStart:
         ApplyOn: None
-      PackageType: Zip
+      PackageType: Image
+    Metadata:
+      DockerTag: latest
+      DockerContext: /src
+      Dockerfile: /src/Dockerfile
 Outputs:
   CmdictBotApi:
     Description: Lambda Function URL for Telegram Bot API.
