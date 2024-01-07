@@ -40,7 +40,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          role-session-name: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          role-session-name: ${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
       - run: |
           sam build --use-container
