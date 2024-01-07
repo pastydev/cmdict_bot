@@ -7,8 +7,6 @@ Resources:
     Properties:
       MemorySize: 128
       Timeout: 3
-      Handler: main.lambda_handler
-      CodeUri: src
       EventInvokeConfig:
         MaximumEventAgeInSeconds: 21600
         MaximumRetryAttempts: 2
