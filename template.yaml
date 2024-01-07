@@ -24,8 +24,8 @@ Resources:
       PackageType: Image
     Metadata:
       DockerTag: latest
-      DockerContext: /src
-      Dockerfile: /src/Dockerfile
+      DockerContext: ./src
+      Dockerfile: Dockerfile
 Outputs:
   CmdictTestBotApi:
     Description: Lambda Function URL for testing version of Telegram Bot API.
