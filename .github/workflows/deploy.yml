@@ -17,7 +17,7 @@ on:
       - 'src/**'
       - 'template.yaml'
       - 'samconfig.toml'
-      - '.github/workflows/deploy-test.yml'
+      - '.github/workflows/deploy.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
