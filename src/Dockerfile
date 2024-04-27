@@ -10,4 +10,6 @@ COPY main.py __init__.py ${LAMBDA_TASK_ROOT}/
 
 RUN python -m cmdict download
 
+ENV CMDICT_HISTORY="value does not matter"
+
 CMD [ "main.lambda_handler" ]
