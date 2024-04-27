@@ -1,4 +1,4 @@
-"""Commands and non-command behaviour of the Telegram bot."""
+"""Commands and non-command behavior of the Telegram bot."""
 import json
 from os import environ
 import traceback
@@ -45,7 +45,7 @@ async def _search(
         context: more info on the user.
     """
     text = str(
-        'Definitions of "{update.message.text}" are: \n\n'
+        f'Definitions of "{update.message.text}" are: \n\n'
         + query_definitions(update.message.text)
     )
     LOG.debug(text)
@@ -107,6 +107,7 @@ def config_app(token: Optional[str] = _TOKEN) -> Application:
 
 class Response(TypedDict):
     """Response returned to the request."""
+
     statusCode: int
     body: str
 
